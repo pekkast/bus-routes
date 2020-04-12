@@ -48,6 +48,7 @@ export default function App() {
                                         label="Alkupysäkki"
                                         selected={startPlace}
                                         onSelect={setStartPlace}
+                                        autofocus
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={4}>

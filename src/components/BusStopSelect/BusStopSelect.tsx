@@ -6,6 +6,7 @@ import data from '../../mocks/reittiopas.json';
 export type BusStopSelectProps = {
     label: string,
     selected: string|null,
+    autofocus?: boolean,
     onSelect: (selected: string|null) => void,
 }
 export default function BusStopSelect(props: BusStopSelectProps) {
@@ -20,7 +21,14 @@ export default function BusStopSelect(props: BusStopSelectProps) {
           options={options}
           value={props.selected}
           onChange={onChange}
-          renderInput={(params) => <TextField {...params} label={props.label} variant="outlined" />}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              autoFocus={props.autofocus}
+              label={props.label}
+              variant="outlined"
+            />
+          )}
         />
     );
 }
