@@ -9,6 +9,13 @@ Sovellusta voit testata [oheiselta sivulta](https://pekkast.github.io/bus-routes
 npm i
 npm start
 ```
+## Suositus
+
+Sovellusta on ehkä helpointa käyttää näppiksellä.
+
+Kiva testireitti on esim. A-P/P-A, jossa nopein ja vähiten vaihtoja sisältävä ovat erit.
+
+## Tech
 
 This project was bootstrapped with typescript template of [Create React App](https://github.com/facebook/create-react-app).
 
