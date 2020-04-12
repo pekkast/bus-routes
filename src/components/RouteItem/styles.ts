@@ -19,6 +19,7 @@ export const useRouteItemStyles = makeStyles((theme: Theme) => ({
     lineLabel: {
         textTransform: 'uppercase',
         color: theme.palette.grey[600],
+        overflowX: 'hidden',
     },
     legStart: {
         position: 'absolute',
@@ -39,6 +40,7 @@ export const useRouteItemStyles = makeStyles((theme: Theme) => ({
 export const useRouteLegStyles = makeStyles((theme: Theme) => ({
     legRoot: {
         margin: 1,
+        maxWidth: '100%',
     },
     legLine: (props: StyleProps) => ({
         position: 'relative',
@@ -61,5 +63,8 @@ export const useRouteLegStyles = makeStyles((theme: Theme) => ({
     lineLabel: {
         textTransform: 'uppercase',
         color: theme.palette.grey[600],
+        overflowX: 'hidden',
+        maxWidth: '100%',
+        textOverflow: 'ellipsis',
     },
 }));
