@@ -4,7 +4,7 @@ Sovellus kertoo nopeimman ja mahdollisesti muitakin reittejä kahden pisteen vä
 
 Vaihtoehtoisesti tulokset voi järjestää vaihtojen määrän suhteen.
 
-Sovellusta voit testata (oheiselta sivulta)[https://pekkast.github.io/bus-routes] tai kloonaamalla repon ja suorittamalla luodussa kansiossa komennot
+Sovellusta voit testata [oheiselta sivulta](https://pekkast.github.io/bus-routes) tai kloonaamalla repon ja suorittamalla luodussa kansiossa komennot
 ```bash
 npm i
 npm start
