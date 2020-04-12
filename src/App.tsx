@@ -1,26 +1,88 @@
+import { AppBar, Box, Container, CssBaseline, Grid, Hidden, MenuItem, Paper, TextField, Toolbar, Typography } from '@material-ui/core';
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import BusStopSelect from './components/BusStopSelect';
+import RouteItem from './components/RouteItem';
+import { getFastest, getEasiest, IRoute } from './utils/routes';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export enum OrderType {
+    Fastest,
+    Easiest,
 }
 
-export default App;
+const toKey = (route: IRoute) => route.legs.reduce((res: string, leg) => `${res},${leg.stops}`, '');
+
+export default function App() {
+    const [startPlace, setStartPlace] = React.useState<string | null>(null);
+    const [stopPlace, setStopPlace] = React.useState<string | null>(null);
+    const [routes, setRoutes] = React.useState<Array<IRoute>>([]);
+    const [order, setOrder] = React.useState<OrderType>(OrderType.Fastest);
+
+    const onOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setOrder(+e.target.value);
+    };
+
+    React.useEffect(() => {
+        if (startPlace && stopPlace && startPlace !== stopPlace) {
+            const method = order === OrderType.Easiest ? getEasiest : getFastest;
+            setRoutes(method(startPlace, stopPlace, 3));
+        }
+    }, [startPlace, stopPlace, order])
+
+    return (
+        <>
+            <CssBaseline />
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6">
+                        Reittiopas
+                    </Typography>
+                </Toolbar>
+            </AppBar>
+            <Container maxWidth="lg">
+                <Box mx={-2} mt={1}>
+                    <Paper elevation={3}>
+                        <Box padding={2}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={4}>
+                                    <BusStopSelect
+                                        label="Alkupysäkki"
+                                        selected={startPlace}
+                                        onSelect={setStartPlace}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={4}>
+                                    <BusStopSelect
+                                        label="Loppupysäkki"
+                                        selected={stopPlace}
+                                        onSelect={setStopPlace}
+                                    />
+                                </Grid>
+                                <Hidden xsDown>
+                                    <Grid item sm={4}>
+                                        <TextField select fullWidth
+                                            variant="outlined"
+                                            value={order}
+                                            onChange={onOrderChange}
+                                        >
+                                            <MenuItem value={OrderType.Fastest}>Nopein</MenuItem>
+                                            <MenuItem value={OrderType.Easiest}>Vähiten vaihtoja</MenuItem>
+                                        </TextField>
+                                    </Grid>
+                                </Hidden>
+                            </Grid>
+                        </Box>
+                        <Box padding={2}>
+                            {routes.map(r => (
+                                <RouteItem
+                                    key={toKey(r)}
+                                    duration={r.duration}
+                                    legs={r.legs}
+                                />
+                            ))}
+                        </Box>
+                    </Paper>
+                </Box>
+            </Container>
+        </>
+    );
+}
