@@ -1,6 +1,6 @@
 import data from '../mocks/reittiopas.json';
 
-interface ITie {
+export interface ITie {
     mista: string,
     mihin: string,
     kesto: number,
@@ -22,7 +22,7 @@ interface IRoutePart {
     duration: number,
 }
 
-interface IDestination {
+export interface IDestination {
     place: string,
     duration: number,
 }
@@ -45,7 +45,7 @@ export interface IRoute {
     duration: number,
 }
 
-const getDestinationsGetter = (roads: Array<ITie>) => (from: string): Array<IDestination> => roads
+export const getDestinationsGetter = (roads: Array<ITie>) => (from: string): Array<IDestination> => roads
     .filter(r => [r.mista, r.mihin].indexOf(from) !== -1)
     .map(r => ({ place: r.mista === from ? r.mihin : r.mista, duration: r.kesto }));
 
