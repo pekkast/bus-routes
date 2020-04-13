@@ -53,7 +53,7 @@ const getDestinations = getDestinationsGetter(data.tiet);
 
 export const getDurationMin = (legs: Array<IRoutePart>): number => legs.reduce((result: number, r: IRoutePart) => Math.min(result, r.duration), Infinity);
 
-const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Array<string>) => {
+export const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Array<string>) => {
     const part = places.join()
     return lines.reduce((result, line) => {
         return result || line.join().indexOf(part) !== -1 || line.reverse().join().indexOf(part) !== -1
