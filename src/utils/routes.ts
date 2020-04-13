@@ -172,13 +172,13 @@ const getLeastSwitches = (legs: Array<IRoutePartOptions>) => legs.slice(1)
     }, legs.slice(0, 1))
     .map(({ stops, duration, lines}): IRouteLeg => ({ stops, duration, line: lines[0] }));
 
-const getMatchingKeys = (keys1: Array<string>, keys2: Array<string>) => {
+export const getMatchingKeys = (keys1: Array<string>, keys2: Array<string>) => {
     return keys1.filter(k => keys2.indexOf(k) !== -1);
 };
 
-const getRouteParts = (arr: Array<string>) => Array(arr.length - 1).fill('').map((v, i) => arr.slice(i, i + 2).join());
+export const getRouteParts = (arr: Array<string>) => Array(arr.length - 1).fill('').map((v, i) => arr.slice(i, i + 2).join());
 
-function orderBy<T>(arr: Array<T>, ...sorters: Array<(a: T, b: T) => 0 | 1 | -1>) {
+export function orderBy<T>(arr: Array<T>, ...sorters: Array<(a: T, b: T) => 0 | 1 | -1>) {
     return sorters.reduce((result, sortBy) => {
         result.sort(sortBy);
         return result;

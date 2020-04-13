@@ -1,5 +1,5 @@
 import { ITie, IDestination, getDestinationsGetter,
-    getDurationMin, IRoutePart, hasDuplicates, routeExistsGetter } from './routes'
+    getDurationMin, IRoutePart, hasDuplicates, routeExistsGetter, getMatchingKeys, getRouteParts, orderBy } from './routes'
 
 const tietMock: Array<ITie> = [{
     mista: 'A',
@@ -98,6 +98,48 @@ describe('/utils/routes', () => {
 
         it('returns false for empty lines', () => {
             expect(routeExistsGetter([])('Ä', 'D')).toBeFalsy();
+        });
+    });
+
+    describe('getMatchingKeys', () => {
+        it('returns the values that exist in both arrays', () => {
+            expect(getMatchingKeys(['d', 'e'], ['e'])).toEqual(['e']);
+            expect(getMatchingKeys(['d', 'e', 'g'], ['r', 'g', 's', 'd'])).toEqual(['d', 'g']);
+        });
+
+        it('returns empty array if arrays have no values in common', () => {
+            expect(getMatchingKeys(['d', 'e'], [])).toEqual([]);
+            expect(getMatchingKeys(['d', 'e', 'g'], ['r', 't', 's'])).toEqual([]);
+        });
+    });
+
+    describe('getRouteParts', () => {
+        it('returns array of comma separated string pairs from given string array, the array length is therefore one less than original', () => {
+            expect(getRouteParts(['d', 'a', 'f'])).toEqual(['d,a', 'a,f']);
+            expect(getRouteParts(['r', 'd', 'a', 'f', 'ä'])).toEqual(['r,d', 'd,a', 'a,f', 'f,ä']);
+        });
+    });
+
+    describe('orderBy<T>', () => {
+        it('returns given array sorted with given sorter functions', () => {
+            const initial = ['b', 'c', 'a'];
+            const expected = ['a', 'b', 'c'];
+            const actual = orderBy(initial, (a: string, b: string) => a < b ? -1 : 1);
+            expect(actual).toEqual(expected);
+        });
+
+        it('does not affect the original array', () => {
+            const initial = ['b', 'c', 'a'];
+            const expected = ['a', 'b', 'c'];
+            orderBy(initial, (a: string, b: string) => a < b ? -1 : 1);
+            expect(initial).not.toEqual(expected);
+        });
+
+        it('handles multiple sorters', () => {
+            const initial = ['b', 'c', 'a'];
+            const expected = ['c', 'b', 'a'];
+            const actual = orderBy(initial, (a: string, b: string) => a < b ? -1 : 1, (a: string, b: string) => a < b ? 1 : -1);
+            expect(actual).toEqual(expected);
         });
     });
 });
