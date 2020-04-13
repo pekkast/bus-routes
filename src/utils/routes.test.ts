@@ -1,5 +1,5 @@
 import { ITie, IDestination, getDestinationsGetter,
-    getDurationMin, IRoutePart } from './routes'
+    getDurationMin, IRoutePart, hasDuplicates } from './routes'
 
 const tietMock: Array<ITie> = [{
     mista: 'A',
@@ -58,5 +58,15 @@ describe('/utils/routes', () => {
         it('returns Infinity for empty array', () => {
             expect(getDurationMin([])).toEqual(Infinity);
         });
+    });
+
+    describe('hasDuplicates', () => {
+        it('returns true if some value emerges more than once in given array', () => {
+            expect(hasDuplicates(['d', 'foo', 'ioh', 'd'])).toBeTruthy();
+        })
+
+        it('returns false if array is unique', () => {
+            expect(hasDuplicates(['d', 'foo', 'ioh', 'dd'])).toBeFalsy();
+        })
     });
 });

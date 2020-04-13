@@ -71,7 +71,10 @@ const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Array<str
 
 const routeExists = routeExistsGetter(Object.values(data.linjastot));
 
-const hasDuplicates = (arr: Array<string>) => /.*(.).*\1{1,}/.test(arr.join(''))
+export const hasDuplicates = (arr: Array<string>) => {
+    const unique = [...new Set(arr)];
+    return arr.length !== unique.length;
+};
 
 const nextRoutes = (routes: Array<IRoutePart>, fastest: number) => routes
     .reduce((res: Array<IRoutePart>, route) => {
