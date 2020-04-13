@@ -16,7 +16,7 @@ interface IData {
     linjastot: ILinjastot,
 }
 
-interface IRoutePart {
+export interface IRoutePart {
     places: Array<string>,
     durations: Array<number>,
     duration: number,
@@ -51,7 +51,7 @@ export const getDestinationsGetter = (roads: Array<ITie>) => (from: string): Arr
 
 const getDestinations = getDestinationsGetter(data.tiet);
 
-const getDurationMin = (legs: Array<IRoutePart>): number => legs.reduce((result: number, r: IRoutePart) => Math.min(result, r.duration), Infinity);
+export const getDurationMin = (legs: Array<IRoutePart>): number => legs.reduce((result: number, r: IRoutePart) => Math.min(result, r.duration), Infinity);
 
 const filterRoutesByDuration = (fastest: number, start: Array<IRoutePart>, end: Array<IRoutePart>) => {
     const fastestEnd = getDurationMin(end);

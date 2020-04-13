@@ -1,4 +1,5 @@
-import { ITie, IDestination, getDestinationsGetter } from './routes'
+import { ITie, IDestination, getDestinationsGetter,
+    getDurationMin, IRoutePart } from './routes'
 
 const tietMock: Array<ITie> = [{
     mista: 'A',
@@ -40,4 +41,22 @@ describe('/utils/routes', () => {
         });
     });
 
+    describe('getDurationMin', () => {
+        it('returns the minimum of durations of routes given', () => {
+            const expected = 2;
+            const initial = [{
+                duration: 7,
+            }, {
+                duration: expected,
+            }, {
+                duration: 3,
+            }] as Array<IRoutePart>;
+
+            expect(getDurationMin(initial)).toEqual(expected);
+        });
+
+        it('returns Infinity for empty array', () => {
+            expect(getDurationMin([])).toEqual(Infinity);
+        });
+    });
 });
