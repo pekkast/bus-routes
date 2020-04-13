@@ -185,7 +185,7 @@ function orderBy<T>(arr: Array<T>, ...sorters: Array<(a: T, b: T) => 0 | 1 | -1>
     }, arr.slice());
 }
 
-const getFullStuff = (from: string, to: string): Array<IRoute> =>
+const getReasonableRoutes = (from: string, to: string): Array<IRoute> =>
     findRoutes(from, to).map(({ duration, places, durations }) => ({
         duration,
         legs: getLeastSwitches(getLines(places, durations))
@@ -193,5 +193,5 @@ const getFullStuff = (from: string, to: string): Array<IRoute> =>
 
 const fastestCompare = (a: IRoute, b: IRoute) => a.duration < b.duration ? -1 : 1;
 const easiestCompare = (a: IRoute, b: IRoute) => a.legs.length < b.legs.length ? -1 : 1;
-export const getFastest = (from: string, to: string, quantity = 1) => orderBy(getFullStuff(from, to), easiestCompare, fastestCompare).slice(0, quantity);
-export const getEasiest = (from: string, to: string, quantity = 1) => orderBy(getFullStuff(from, to), fastestCompare, easiestCompare).slice(0, quantity);
+export const getFastest = (from: string, to: string, quantity = 1) => orderBy(getReasonableRoutes(from, to), easiestCompare, fastestCompare).slice(0, quantity);
+export const getEasiest = (from: string, to: string, quantity = 1) => orderBy(getReasonableRoutes(from, to), fastestCompare, easiestCompare).slice(0, quantity);
