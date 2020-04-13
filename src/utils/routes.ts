@@ -53,15 +53,6 @@ const getDestinations = getDestinationsGetter(data.tiet);
 
 export const getDurationMin = (legs: Array<IRoutePart>): number => legs.reduce((result: number, r: IRoutePart) => Math.min(result, r.duration), Infinity);
 
-const filterRoutesByDuration = (fastest: number, start: Array<IRoutePart>, end: Array<IRoutePart>) => {
-    const fastestEnd = getDurationMin(end);
-    const fastestStart = getDurationMin(start);
-    return {
-        start: start.filter(r => r.duration + fastestEnd < fastest),
-        end: end.filter(r => r.duration + fastestStart < fastest),
-    };
-};
-
 const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Array<string>) => {
     const part = places.join()
     return lines.reduce((result, line) => {
@@ -134,9 +125,11 @@ const findRoutes = (startPoint: string, endPoint: string) => {
         fromEnd = nextRoutes(fromEnd, getDurationMin(result));
         result.push(...getMatches(fromStart, fromEnd));
 
-        const { start, end } = filterRoutesByDuration(getDurationMin(result), fromStart, fromEnd);
-        fromStart = start;
-        fromEnd = end;
+        const fastestResult = getDurationMin(result);
+        const fastestFromEnd = getDurationMin(fromEnd);
+        fromStart = fromStart.filter(r => r.duration < (fastestResult - fastestFromEnd));
+        const fastestFromStart = getDurationMin(fromStart);
+        fromEnd = fromEnd.filter(r => r.duration < (fastestResult - fastestFromStart));
     }  while (fromStart.length > 0 && fromEnd.length > 0);
 
     return result;
