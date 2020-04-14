@@ -1,13 +1,14 @@
 import data from './reittiopas.json';
 import { ITie, IDestination, IRoutePart, ILinjastot, IRoutePartOptions, IRouteLeg, IRoute } from './models';
+import { hasDuplicates, getDurationMin, getMatchingKeys, getRouteParts, orderBy } from './helpers';
+
+export const getBusStops = () => data.pysakit;
 
 export const getDestinationsGetter = (roads: Array<ITie>) => (from: string): Array<IDestination> => roads
     .filter(r => [r.mista, r.mihin].indexOf(from) !== -1)
     .map(r => ({ place: r.mista === from ? r.mihin : r.mista, duration: r.kesto }));
 
 const getDestinations = getDestinationsGetter(data.tiet);
-
-export const getDurationMin = (legs: Array<IRoutePart>): number => legs.reduce((result: number, r: IRoutePart) => Math.min(result, r.duration), Infinity);
 
 export const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Array<string>) => {
     const part = places.join()
@@ -17,13 +18,6 @@ export const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Ar
 }
 
 const routeExists = routeExistsGetter(Object.values(data.linjastot));
-
-export const hasDuplicates = (arr: Array<string>) => {
-    const unique = [...new Set(arr)];
-    return arr.length !== unique.length;
-};
-
-export const getBusStops = () => data.pysakit;
 
 const nextRoutes = (routes: Array<IRoutePart>, fastest: number) => routes
     .reduce((res: Array<IRoutePart>, route) => {
@@ -129,19 +123,6 @@ const getLeastSwitches = (legs: Array<IRoutePartOptions>) => legs.slice(1)
         return result.concat(item);
     }, legs.slice(0, 1))
     .map(({ stops, duration, lines}): IRouteLeg => ({ stops, duration, line: lines[0] }));
-
-export const getMatchingKeys = (keys1: Array<string>, keys2: Array<string>) => {
-    return keys1.filter(k => keys2.indexOf(k) !== -1);
-};
-
-export const getRouteParts = (arr: Array<string>) => Array(arr.length - 1).fill('').map((v, i) => arr.slice(i, i + 2).join());
-
-export function orderBy<T>(arr: Array<T>, ...sorters: Array<(a: T, b: T) => 0 | 1 | -1>) {
-    return sorters.reduce((result, sortBy) => {
-        result.sort(sortBy);
-        return result;
-    }, arr.slice());
-}
 
 const getReasonableRoutes = (from: string, to: string): Array<IRoute> =>
     findRoutes(from, to).map(({ duration, places, durations }) => ({
