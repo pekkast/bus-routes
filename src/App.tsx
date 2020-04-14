@@ -2,7 +2,7 @@ import { AppBar, Box, Container, CssBaseline, Grid, Hidden, MenuItem, Paper, Tex
 import React from 'react';
 import BusStopSelect from './components/BusStopSelect';
 import RouteItem from './components/RouteItem';
-import { getFastest, getEasiest, IRoute } from './utils/routes';
+import { getFastest, getEasiest, IRoute } from './data';
 
 export enum OrderType {
     Fastest,

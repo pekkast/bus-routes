@@ -1,7 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import React from 'react';
-import data from '../../mocks/reittiopas.json';
+import data from '../../data/reittiopas.json';
 
 export type BusStopSelectProps = {
     label: string,

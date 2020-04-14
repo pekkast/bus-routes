@@ -1,49 +1,5 @@
-import data from '../mocks/reittiopas.json';
-
-export interface ITie {
-    mista: string,
-    mihin: string,
-    kesto: number,
-}
-
-interface ILinjastot {
-    [name: string]: Array<string>,
-}
-
-interface IData {
-    pysakit: Array<string>,
-    tiet: Array<ITie>,
-    linjastot: ILinjastot,
-}
-
-export interface IRoutePart {
-    places: Array<string>,
-    durations: Array<number>,
-    duration: number,
-}
-
-export interface IDestination {
-    place: string,
-    duration: number,
-}
-
-interface IRouteStops {
-    stops: string,
-    duration: number,
-}
-
-interface IRoutePartOptions extends IRouteStops {
-    lines: Array<string>,
-}
-
-export interface IRouteLeg extends IRouteStops {
-    line: string,
-}
-
-export interface IRoute {
-    legs: Array<IRouteLeg>,
-    duration: number,
-}
+import data from './reittiopas.json';
+import { ITie, IDestination, IRoutePart, ILinjastot, IRoutePartOptions, IRouteLeg, IRoute } from './models';
 
 export const getDestinationsGetter = (roads: Array<ITie>) => (from: string): Array<IDestination> => roads
     .filter(r => [r.mista, r.mihin].indexOf(from) !== -1)

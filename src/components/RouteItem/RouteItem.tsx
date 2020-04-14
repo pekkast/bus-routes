@@ -1,6 +1,6 @@
 import { Box, Grid } from '@material-ui/core';
 import React from 'react';
-import { IRouteLeg } from '../../utils/routes';
+import { IRouteLeg } from '../../data';
 import LabelItem from './LabelItem';
 import RouteLeg from './RouteLeg';
 import { useRouteItemStyles } from './styles';

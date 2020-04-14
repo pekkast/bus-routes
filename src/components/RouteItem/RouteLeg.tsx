@@ -1,7 +1,7 @@
 import { Box, Grid } from '@material-ui/core';
 import BusIcon from '@material-ui/icons/DirectionsBus';
 import React from 'react';
-import { IRouteLeg } from '../../utils/routes';
+import { IRouteLeg } from '../../data';
 import { ColorPalette, useRouteLegStyles } from './styles';
 
 const lineToColor = (line: string): ColorPalette => {
