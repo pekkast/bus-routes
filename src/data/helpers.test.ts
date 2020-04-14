@@ -1,27 +1,5 @@
-import { getMatchingKeys, getRouteParts, orderBy, getDurationMin, hasDuplicates } from './helpers'
-import { ITie, IDestination, IRoutePart } from './models'
-
-const tietMock: Array<ITie> = [{
-    mista: 'A',
-    mihin: 'B',
-    kesto: 2,
-}, {
-    mista: 'B',
-    mihin: 'C',
-    kesto: 3,
-}, {
-    mista: 'R',
-    mihin: 'A',
-    kesto: 1,
-}, {
-    mista: 'B',
-    mihin: 'D',
-    kesto: 2,
-}, {
-    mista: 'A',
-    mihin: 'D',
-    kesto: 5,
-}];
+import { getDurationMin, getMatchingKeys, getRouteParts, hasDuplicates, orderBy } from './helpers';
+import { IRoutePart } from './models';
 
 describe('/utils/routes', () => {
     describe('getDurationMin', () => {

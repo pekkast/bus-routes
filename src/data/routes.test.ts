@@ -1,5 +1,5 @@
-import { getDestinationsGetter, routeExistsGetter } from './routes'
-import { ITie, IDestination, IRoutePart } from './models'
+import { IDestination, ITie } from './models';
+import { getDestinationsGetter, routeExistsGetter } from './routes';
 
 const tietMock: Array<ITie> = [{
     mista: 'A',
