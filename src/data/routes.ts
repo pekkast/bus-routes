@@ -56,8 +56,16 @@ const getMatches = (fromStart: Array<IRoutePart>, fromEnd: Array<IRoutePart>) =>
             return res;
         }
 
+        // We want to see if there might be a faster route that contains more stops than already matched
+        // Hence the matches are not removed directly from search
+        // This may cause routes with duplicates i.e. C,E,M,L,M,N,O, which is combined from C,E,M,L AND O,N,M,L
+        const places = route.places.concat(match.places.slice(0, -1).reverse());
+        if (hasDuplicates(places)) {
+            return res;
+        }
+
         return res.concat({
-            places: route.places.concat(match.places.slice(0, -1).reverse()),
+            places,
             durations: route.durations.concat(match.durations.slice().reverse()),
             duration: match.duration + route.duration,
         })
