@@ -1,2 +1,2 @@
-export { getEasiest, getFastest } from './routes';
+export { getEasiest, getFastest, getBusStops } from './routes';
 export { IRoute, IRouteLeg } from './models';

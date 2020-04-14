@@ -2,7 +2,7 @@ import { AppBar, Box, Container, CssBaseline, Grid, Hidden, MenuItem, Paper, Tex
 import React from 'react';
 import BusStopSelect from './components/BusStopSelect';
 import RouteItem from './components/RouteItem';
-import { getFastest, getEasiest, IRoute } from './data';
+import { getFastest, getEasiest, IRoute, getBusStops } from './data';
 
 export enum OrderType {
     Fastest,
@@ -16,6 +16,7 @@ export default function App() {
     const [stopPlace, setStopPlace] = React.useState<string | null>(null);
     const [routes, setRoutes] = React.useState<Array<IRoute>>([]);
     const [order, setOrder] = React.useState<OrderType>(OrderType.Fastest);
+    const [busStops, setBusStops] = React.useState<Array<string>>([]);
 
     const onOrderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setOrder(+e.target.value);
@@ -27,6 +28,10 @@ export default function App() {
             setRoutes(method(startPlace, stopPlace, 3));
         }
     }, [startPlace, stopPlace, order])
+
+    React.useEffect(() => {
+        setBusStops(getBusStops());
+    }, [])
 
     return (
         <>
@@ -46,6 +51,7 @@ export default function App() {
                                 <Grid item xs={12} sm={4}>
                                     <BusStopSelect
                                         label="Alkupysäkki"
+                                        options={busStops}
                                         selected={startPlace}
                                         onSelect={setStartPlace}
                                         autofocus
@@ -54,6 +60,7 @@ export default function App() {
                                 <Grid item xs={12} sm={4}>
                                     <BusStopSelect
                                         label="Loppupysäkki"
+                                        options={busStops}
                                         selected={stopPlace}
                                         onSelect={setStopPlace}
                                     />

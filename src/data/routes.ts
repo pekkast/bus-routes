@@ -23,6 +23,8 @@ export const hasDuplicates = (arr: Array<string>) => {
     return arr.length !== unique.length;
 };
 
+export const getBusStops = () => data.pysakit;
+
 const nextRoutes = (routes: Array<IRoutePart>, fastest: number) => routes
     .reduce((res: Array<IRoutePart>, route) => {
         const start = route.places.slice(-1).pop();
