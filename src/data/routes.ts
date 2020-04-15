@@ -1,6 +1,6 @@
 import data from './reittiopas.json';
 import { ITie, IDestination, IRoutePart, ILinjastot, IRoutePartOptions, IRouteLeg, IRoute } from './models';
-import { hasDuplicates, getDurationMin, getMatchingKeys, getRouteParts, orderBy } from './helpers';
+import { hasDuplicates, getMatchingKeys, getRouteParts, orderBy, getDurationMin } from './helpers';
 
 export const getBusStops = () => data.pysakit;
 
@@ -19,7 +19,7 @@ export const routeExistsGetter = (lines: Array<Array<string>>) => (...places: Ar
 
 const routeExists = routeExistsGetter(Object.values(data.linjastot));
 
-const nextRoutes = (routes: Array<IRoutePart>, fastest: number) => routes
+const nextRoutes = (routes: Array<IRoutePart>, durationLimit: number) => routes
     .reduce((res: Array<IRoutePart>, route) => {
         const start = route.places.slice(-1).pop();
         const previous = route.places.slice(-2, -1).pop();
@@ -32,21 +32,8 @@ const nextRoutes = (routes: Array<IRoutePart>, fastest: number) => routes
                 durations: route.durations.concat(r.duration),
             })));
     }, [])
-    .filter(r => r.duration < fastest)
-    // Prevent loops
-    .filter(r => !hasDuplicates(r.places))
-    .reduce((res: Array<IRoutePart>, route) => {
-        const last = route.places.slice(-1).pop();
-        const idx = res.findIndex(r => r.places.slice(-1).pop() === last);
-        if (idx !== -1) {
-            if (res[idx].duration > route.duration) {
-                res[idx] = route;
-            }
-
-            return res;
-        }
-        return res.concat(route);
-    }, []);
+    .filter(r => r.duration < durationLimit)
+    .filter(r => !hasDuplicates(r.places));
 
 const getMatches = (fromStart: Array<IRoutePart>, fromEnd: Array<IRoutePart>) => fromStart
     .reduce((res: Array<IRoutePart>, route: IRoutePart) => {
@@ -80,16 +67,10 @@ const findRoutes = (startPoint: string, endPoint: string) => {
     result.push(...getMatches(fromStart, fromEnd));
 
     do {
-        fromStart = nextRoutes(fromStart, getDurationMin(result));
+        fromStart = nextRoutes(fromStart, getDurationMin(result) * 2);
         result.push(...getMatches(fromStart, fromEnd));
-        fromEnd = nextRoutes(fromEnd, getDurationMin(result));
+        fromEnd = nextRoutes(fromEnd, getDurationMin(result) * 2);
         result.push(...getMatches(fromStart, fromEnd));
-
-        const fastestResult = getDurationMin(result);
-        const fastestFromEnd = getDurationMin(fromEnd);
-        fromStart = fromStart.filter(r => r.duration < (fastestResult - fastestFromEnd));
-        const fastestFromStart = getDurationMin(fromStart);
-        fromEnd = fromEnd.filter(r => r.duration < (fastestResult - fastestFromStart));
     }  while (fromStart.length > 0 && fromEnd.length > 0);
 
     return result;
