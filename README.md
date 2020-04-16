@@ -1,6 +1,6 @@
 # Reittiopas
 
-Sovellus kertoo nopeimman ja mahdollisesti muitakin reittejä kahden pisteen välillä, mitkä on kuljettavissa linja-autolla oheisen [datan](./src/mocks/reittiopas.json) mukaisesti.
+Sovellus kertoo nopeimman ja mahdollisesti muitakin reittejä kahden pisteen välillä, mitkä on kuljettavissa linja-autolla oheisen [datan](./src/data/reittiopas.json) mukaisesti.
 
 Vaihtoehtoisesti tulokset voi järjestää vaihtojen määrän suhteen.
 
